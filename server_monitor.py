@@ -19,6 +19,7 @@ import os
 import subprocess
 import platform
 import hashlib
+import ipaddress
 import threading
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any, List
@@ -440,6 +441,11 @@ class ZJMFClient:
 def ping_host(ip: str, timeout: int = 5) -> bool:
     """Ping指定IP"""
     if not ip:
+        return False
+
+    try:
+        ipaddress.ip_address(ip)
+    except ValueError:
         return False
 
     if platform.system().lower() == "windows":
